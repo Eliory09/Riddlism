@@ -41,31 +41,31 @@ class Difficulty(BaseModel):
 
 
 class Riddles(BaseModel):
+    riddle_id = AutoField()
+    question = TextField()
     answer = CharField()
     difficulty = ForeignKeyField(column_name='difficulty_id', field='difficulty_id', model=Difficulty, null=True)
-    question = CharField()
-    riddle_id = AutoField()
 
     class Meta:
         table_name = 'riddles'
 
 
 class Users(BaseModel, UserMixin):
-    birthday = DateField()
-    email = CharField(null=True)
-    password = CharField()
-    points = IntegerField(constraints=[SQL("DEFAULT 0")])
     user_id = AutoField()
     username = CharField()
+    password = CharField()
+    email = CharField(null=True)
     name = TextField()
+    birthday = DateField()
+    points = IntegerField(constraints=[SQL("DEFAULT 0")])
 
     class Meta:
         table_name = 'users'
 
 
 class UsersRiddles(BaseModel):
-    riddle = ForeignKeyField(column_name='riddle_id', field='riddle_id', model=Riddles)
     user = ForeignKeyField(column_name='user_id', field='user_id', model=Users)
+    riddle = ForeignKeyField(column_name='riddle_id', field='riddle_id', model=Riddles)
 
     class Meta:
         table_name = 'users_riddles'
@@ -84,8 +84,8 @@ def reset_db():
 
 def update_difficulties():
     with database.connection_context():
-        database.drop_tables(Difficulty)
-        database.create_tables([Difficulty], safe=True)
+        # database.drop_tables(Difficulty)
+        # database.create_tables([Difficulty], safe=True)
         difficulties = [
             {'name': 'Easy'},
             {'name': 'Normal'},
@@ -98,7 +98,7 @@ def update_difficulties():
     
 def update_riddles():
     with database.connection_context():
-        database.create_tables([Riddles], safe=True)
+        # database.create_tables([Riddles], safe=True)
         data = pandas.read_csv('riddles.csv')
         questions = data.QUESTIONS.tolist()
         answers = data.ANSWERS.tolist()
