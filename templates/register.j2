@@ -1,0 +1,69 @@
+{% extends "base.j2" %}
+{% block title %}Register{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block content %}
+    <main class="register-main-container">
+        <div class="head-text">
+            <h1>Sign-up to Riddlism</h1>
+            <h2>Enter your details below and start playing!</h2>
+        </div>
+        {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'registered' %}
+                        <div class="notification already-registered">
+                            {{ message }}. Go to <a href="{{ url_for('login') }}">login page</a>.
+                        </div>
+                    {% else %}
+                        <div class="notification">
+                            {{ message }}. Please try again.
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="register-form">
+            <form name='reg-form' method="POST">
+                <div class="form-group">
+                    <label for="InputUsername">Username</label>
+                    <input name="username" type="username" class="form-control" id="InputUsername"
+                        aria-describedby="emailHelp" placeholder="Enter username"
+                        value="{{request.form.username }}">
+                </div>
+                <div class="form-group">
+                    <label for="InputPassword">Password</label>
+                    <input name="password" type="password" class="form-control" id="InputPassword" placeholder="Password"
+                        value="{{request.form.password }}">
+                </div>
+                <div class="form-group">
+                    <label for="InputEmail">Email address</label>
+                    <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Enter email"
+                        value="{{request.form.email }}">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="InputName">Full name</label>
+                    <input name="name" type="text" class="form-control" id="InputName" placeholder="Enter full name"
+                        value="{{request.form.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="InputBirthday">Birthday</label>
+                    <input name="birthday" type="date" class="form-control" id="InputBirthday" placeholder="Enter birthday"
+                        value="{{request.form.birthday }}">
+                </div>
+                {# <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div> #}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </main>
+
+{% endblock %}

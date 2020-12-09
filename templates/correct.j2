@@ -1,0 +1,25 @@
+{% extends "base.j2" %}
+{% block title %}Correct!{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+  <main class="riddle-main-container">
+    <div class="riddle-head-text">
+      <h1>Congratulations {{ username }}!</h1>
+      <h2>You solved the puzzle</h2> 
+    </div>
+    <div class="star-image"><img src="{{ url_for('static', filename='images/star.svg') }}" width="150" height="150" class="d-inline-block align-top" alt="..."></div>
+    <div class="continue-buttons">
+      <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <a href="{{ url_for('index') }}"><button type="button" class="btn btn-outline-primary" name="submit" value="Homepage">Homepage</button></a>
+        <a href="{{ url_for('riddles') }}"><button type="button" class="btn btn-outline-primary" name="submit" value="Riddles">Riddles</button></a>
+        <a href="{{ url_for('riddle', riddle_id=riddle_id + 1) }}"><button type="button" class="btn btn-outline-primary" name="submit" value="NextRiddle">Next Riddle</button></a>
+      </div>
+    </div>
+    
+  </main>
+{% endblock %}

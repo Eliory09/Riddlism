@@ -1,0 +1,40 @@
+{% extends "base.j2" %}
+{% block title %}Login{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block content %}
+    <main class="login-main-container">
+        <div class="head-text">
+            <h1>Login to Riddlism</h1>
+        </div>
+        {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification pass-incorrect">
+                {{ messages[0] }}. Please try again.
+            </div>
+        {% endif %}
+        {% endwith %}
+        <div class="login-form">
+            <form name='log-form' method="POST">
+                <div class="form-group">
+                    <label for="InputUsername">Username</label>
+                    <input name="username" type="username" class="form-control" id="InputUsername"
+                        aria-describedby="emailHelp" placeholder="Enter username"
+                        value="{{request.form.username }}">
+                </div>
+                <div class="form-group">
+                    <label for="InputPassword">Password</label>
+                    <input name="password" type="password" class="form-control" id="InputPassword" placeholder="Password"
+                        value="{{request.form.password }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </main>
+
+{% endblock %}

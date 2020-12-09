@@ -1,0 +1,32 @@
+{% extends "base.j2" %}
+{% block title %}Riddle {{riddle_id}}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+  <main class="riddles-main-container">
+      <div class="riddles-head-text">
+          <h1>The Riddles</h1>
+          <h2>Choose the next riddle to solve:</h2>
+      </div>
+      <div class="cards-wrapper">
+        {% for riddle_num in riddles %}
+          <div class="card">
+            <div class="card-text-container">
+              <p>{{ riddle_num }}</p>
+            </div>
+            {% if riddle_num not in solved %}
+              <a href="{{ url_for('riddle', riddle_id=riddle_num) }}"><button type="submit" class="btn btn-primary">Play</button></a>
+            {% else %}
+              <button type="submit" class="btn btn-primary solved" disabled>Solved</button>
+            {% endif %}
+          </div>
+            
+
+        {% endfor %}
+      </div>
+  </main>
+{% endblock %}

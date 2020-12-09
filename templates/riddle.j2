@@ -1,0 +1,40 @@
+{% extends "base.j2" %}
+{% block title %}Riddle {{riddle_id}}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+  <main class="riddle-main-container">
+    <div class="riddle-head-text">
+      <h1>Riddle {{riddle_id}}</h1>
+      <h2>Difficulty: {{ difficulty['name'] }}</h2> 
+    </div>
+    {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="notification">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <p class="important">
+    <div id="question">
+      <p>{{question}}</p>
+    </div>
+    <div class="riddle-form">
+      <form name='reg-form' method="POST">
+        <div class="form-group">
+            <label for="InputAnswer">Answer</label>
+            <input name="user_answer" type="answer" class="form-control" id="InputAnswer"
+                aria-describedby="answerHelp" placeholder="Enter your answer"
+                value="{{request.form.user_answer}}">
+        </div>
+        <button type="submit" class="btn btn-dark">Submit</button>
+      </form>
+    </div>
+    
+  </main>
+{% endblock %}

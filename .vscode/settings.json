@@ -1,0 +1,7 @@
+{
+    "cSpell.words": [
+        "sqlite"
+    ],
+    "python.pythonPath": ".venv/bin/python",
+    "git.ignoreLimitWarning": true
+}
