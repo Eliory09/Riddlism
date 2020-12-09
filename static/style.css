@@ -196,35 +196,6 @@ footer {
     
 }
 
-@media screen and (max-width: 900px) {
-    .cards-wrapper  {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 40px;
-        padding: 30px;
-    }
-
-    .riddles-head-text h2 {
-        padding-top: 10px;
-        font-size: 1.2rem;
-    }
-
-    .card-text-container {
-        position: relative;
-        margin: 20px;
-        padding: 10px;
-        height: 130px;
-        background-color: #2D253A;
-    }
-    
-    .card-text-container p {
-        font-size: 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-    }
-}
 
 .card button {
     width: 70%;
@@ -326,8 +297,56 @@ footer {
 
 .error-head-text h1 {
     font-size: 5rem;
+    text-align: center;
 }
 
 .error-button {
     margin-top: 50px;
+}
+
+@media screen and (max-width: 600px) {
+    .main-body {
+        background: url(/static/images/main-600.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+
+    .error-body {
+        background: url(/static/images/error-600.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+    }
+
+    .cards-wrapper  {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 40px;
+        padding: 30px;
+    }
+
+    .riddles-head-text h2 {
+        padding-top: 10px;
+        font-size: 1.2rem;
+    }
+
+    .card-text-container {
+        position: relative;
+        margin: 20px;
+        padding: 10px;
+        height: 130px;
+        background-color: #2D253A;
+    }
+    
+    .card-text-container p {
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+    }
 }
