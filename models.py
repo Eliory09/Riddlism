@@ -2,7 +2,6 @@ import os
 from random import randint
 
 import pandas
-import psycopg2
 from dotenv import load_dotenv
 from flask_login import UserMixin
 from peewee import *
@@ -10,22 +9,24 @@ from playhouse.db_url import connect
 
 
 load_dotenv()
+# if 'HEROKU' in os.environ:
+db_proxy = Proxy()
+database = connect(os.getenv('DATABASE_URL'))
+db_proxy.initialize(database)
 
-if 'HEROKU' in os.environ:
-    database = connect(os.environ.get('DATABASE_URL'))
-else:
-    DATABASE = os.getenv('DATABASE')
-    USER = os.getenv('USER')
-    PASSWORD = os.getenv('PASSWORD')
-    HOST = os.getenv('HOST')
-    PORT = os.getenv('PORT')
-    database = PostgresqlDatabase(
-        DATABASE,
-        user=USER,
-        password=PASSWORD,
-        host=HOST,
-        port=PORT,
-    )
+# else:
+#     DATABASE = os.getenv('DATABASE')
+#     USER = os.getenv('USER')
+#     PASSWORD = os.getenv('PASSWORD')
+#     HOST = os.getenv('HOST')
+#     PORT = os.getenv('PORT')
+#     database = PostgresqlDatabase(
+#         DATABASE,
+#         user=USER,
+#         password=PASSWORD,
+#         host=HOST,
+#         port=PORT,
+#     )
 
 
 class UnknownField(object):

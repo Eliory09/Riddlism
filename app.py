@@ -2,26 +2,27 @@ import os
 
 import bcrypt
 
+import config
+
 from dotenv import load_dotenv
-from flask import (Flask, abort, flash, redirect, render_template, request,
+from flask import (Flask, abort, flash, g, redirect, render_template, request,
                    session, url_for)
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from playhouse.shortcuts import model_to_dict
 
-from models import Difficulty, Riddles, Users, UsersRiddles, database
+from models import Difficulty, Riddles, Users, UsersRiddles, database, db_proxy
 
 
 load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
 if 'HEROKU' in os.environ:
-    SECRET_KEY = os.environ['SECRET_KEY'].encode('utf-8')
-else:
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY.encode('utf-8')
 
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
-app.config.from_object(os.environ['APP_SETTINGS'])
+app.config.from_object(config.DevelopmentConfig())
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -43,13 +44,14 @@ def get_object_or_404(model, *expressions):
 
 @app.before_request
 def _db_connect():
-    database.connect()
+    g.db = db_proxy
+    g.db.connect()
 
 
 @app.teardown_request
 def _db_close(_):
     if not database.is_closed():
-        database.close()
+        g.db.close()
 
 
 @app.errorhandler(404)
