@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
-app.config.from_pyfile('config.py')
+app.config.from_object(os.environ['APP_SETTINGS'])
 
 login_manager = LoginManager()
 login_manager.init_app(app)

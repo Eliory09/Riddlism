@@ -20,7 +20,11 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
+    TESTING = True
+    TEMPLATES_AUTO_RELOAD = True
+
 
 
 class TestingConfig(Config):
     TESTING = True
+    TEMPLATES_AUTO_RELOAD = True
