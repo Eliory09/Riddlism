@@ -300,6 +300,10 @@ footer {
     text-align: center;
 }
 
+.error-head-text h2 {
+    text-align: center;
+}
+
 .error-button {
     margin-top: 50px;
 }
