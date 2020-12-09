@@ -13,7 +13,10 @@ from models import Difficulty, Riddles, Users, UsersRiddles, database
 
 
 load_dotenv()
-SECRET_KEY = os.getenv('SECRET_KEY')
+if 'HEROKU' in os.environ:
+    SECRET_KEY = os.environ['SECRET_KEY'].encode('utf-8')
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 app = Flask(__name__)

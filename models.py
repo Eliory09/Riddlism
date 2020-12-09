@@ -1,26 +1,30 @@
-from peewee import *
-import pandas
-from flask_login import UserMixin
-from random import randint
-from dotenv import load_dotenv
 import os
+from random import randint
+
+import pandas
+import psycopg2
+from dotenv import load_dotenv
+from flask_login import UserMixin
+from peewee import *
 
 
-load_dotenv()
-DATABASE = os.getenv('DATABASE')
-USER = os.getenv('USER')
-PASSWORD = os.getenv('PASSWORD')
-HOST = os.getenv('HOST')
-PORT = os.getenv('PORT')
-
-
-database = PostgresqlDatabase(
-    DATABASE,
-    user=USER,
-    password=PASSWORD,
-    host=HOST,
-    port=PORT,
-)
+if 'HEROKU' in os.environ:
+    DATABASE_URL = os.environ['DATABASE_URL']
+    database = psycopg2.connect(DATABASE_URL, sslmode='require')
+else:
+    load_dotenv()
+    DATABASE = os.getenv('DATABASE')
+    USER = os.getenv('USER')
+    PASSWORD = os.getenv('PASSWORD')
+    HOST = os.getenv('HOST')
+    PORT = os.getenv('PORT')
+    database = PostgresqlDatabase(
+        DATABASE,
+        user=USER,
+        password=PASSWORD,
+        host=HOST,
+        port=PORT,
+    )
 
 
 class UnknownField(object):
