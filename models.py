@@ -94,6 +94,6 @@ def update_riddles():
         database.commit()
 
 
-reset_db()
-update_difficulties()
-update_riddles()
+# reset_db()
+# update_difficulties()
+# update_riddles()
