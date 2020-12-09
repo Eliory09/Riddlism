@@ -6,13 +6,14 @@ import psycopg2
 from dotenv import load_dotenv
 from flask_login import UserMixin
 from peewee import *
+from playhouse.db_url import connect
 
+
+load_dotenv()
 
 if 'HEROKU' in os.environ:
-    DATABASE_URL = os.environ['DATABASE_URL']
-    database = psycopg2.connect(DATABASE_URL, sslmode='require')
+    database = connect(os.environ.get('DATABASE_URL'))
 else:
-    load_dotenv()
     DATABASE = os.getenv('DATABASE')
     USER = os.getenv('USER')
     PASSWORD = os.getenv('PASSWORD')
