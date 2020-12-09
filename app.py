@@ -13,6 +13,8 @@ from playhouse.shortcuts import model_to_dict
 
 from models import Difficulty, Riddles, Users, UsersRiddles, database, db_proxy
 
+from peewee import fn
+
 
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -78,7 +80,7 @@ def index():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        user = Users.select(Users.username).where(Users.username == request.form['username'])
+        user = Users.select(Users.username).where(fn.Lower(Users.username) == request.form['username'].lower())
         if user:
             flash('Username is already registered', "registered")
         elif len(request.form['password']) < MINIMAL_PASS_LENGTH:
@@ -144,8 +146,9 @@ def riddles():
 def login():
     if request.method == 'POST' and request.form['username']:
         try:
+            input_username = request.form['username'].lower()
             user = Users.select().where(
-                    Users.username == request.form['username']
+                fn.Lower(Users.username) == input_username
                 ).get()
         except Users.DoesNotExist:
             flash('No such username found. Please try again')
@@ -158,7 +161,6 @@ def login():
                 return redirect(url_for('index'))
             else:
                 flash('The password entered is incorrect')
-
     return render_template('login.j2')
 
 
