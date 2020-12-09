@@ -2,9 +2,26 @@ from peewee import *
 import pandas
 from flask_login import UserMixin
 from random import randint
+from dotenv import load_dotenv
+import os
 
 
-database = SqliteDatabase('riddles.db')
+load_dotenv()
+DATABASE = os.getenv('DATABASE')
+USER = os.getenv('USER')
+PASSWORD = os.getenv('PASSWORD')
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
+
+
+database = PostgresqlDatabase(
+    DATABASE,
+    user=USER,
+    password=PASSWORD,
+    host=HOST,
+    port=PORT,
+)
+
 
 
 class UnknownField(object):

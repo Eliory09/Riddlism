@@ -13,11 +13,13 @@ from models import Difficulty, Riddles, Users, UsersRiddles, database
 
 
 load_dotenv()
-SECRET_KEY = os.getenv('PROJECT_API_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+app.config.from_pyfile('config.py')
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
