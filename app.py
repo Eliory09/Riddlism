@@ -34,7 +34,11 @@ MINIMAL_PASS_LENGTH = 8
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.get(user_id)
+    try:
+        user = Users.get(user_id)
+    except:
+        return
+    return user
 
 
 def get_object_or_404(model, *expressions):
