@@ -94,7 +94,6 @@ def reset_db(path):
                 print("An error occured. Check your riddles.csv file or input path.")
             
 
-
 def update_difficulties():
     """Updates difficulty table."""
     with database.connection_context():

@@ -24,7 +24,6 @@ class DevelopmentConfig(Config):
     TEMPLATES_AUTO_RELOAD = True
 
 
-
 class TestingConfig(Config):
     TESTING = True
     TEMPLATES_AUTO_RELOAD = True
