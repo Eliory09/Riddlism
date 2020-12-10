@@ -1,26 +1,23 @@
 import os
 
 import bcrypt
-
-import config
-
 from dotenv import load_dotenv
 from flask import (Flask, abort, flash, g, redirect, render_template, request,
                    session, url_for)
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
+from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
+import config
 from models import Difficulty, Riddles, Users, UsersRiddles, database, db_proxy
 
-from peewee import fn
 
-
+# Initialization
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 if 'HEROKU' in os.environ:
     SECRET_KEY.encode('utf-8')
-
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -30,22 +27,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 MINIMAL_PASS_LENGTH = 8
+RIDDLES_LIMIT = 150
+TOP_PLAYERS = 10
 
 
 @login_manager.user_loader
 def load_user(user_id):
+    """User loader function."""
     try:
         user = Users.get(user_id)
     except:
         return
     return user
-
-
-def get_object_or_404(model, *expressions):
-    try:
-        return model.get(*expressions)
-    except model.DoesNotExist:
-        abort(404)
 
 
 @app.before_request
@@ -70,11 +63,12 @@ def page_unauthorized(e):
     return render_template('401.j2'), 401
 
 
+# Register error handlers.
 app.register_error_handler(404, page_not_found)
 app.register_error_handler(401, page_unauthorized)
 
 
-
+#App routes.
 @app.route('/index')
 @app.route('/')
 def index():
@@ -107,6 +101,8 @@ def register():
 @app.route('/riddles/<int:riddle_id>', methods=["GET", "POST"])
 @login_required
 def riddle(riddle_id):
+    if riddle_id >= RIDDLES_LIMIT:
+        abort(404)
     query = UsersRiddles.select(UsersRiddles.riddle_id).where(UsersRiddles.user_id == current_user.user_id)
     solved = {riddle.riddle_id for riddle in query}
     for num in solved:
@@ -114,8 +110,8 @@ def riddle(riddle_id):
             return redirect(url_for('correct', riddle_id=riddle_id))
     if request.method == "POST":
         riddle = Riddles.select().where(Riddles.riddle_id == riddle_id).get()
-        answer = riddle.answer
-        if answer != request.form['user_answer']:
+        answer = riddle.answer.lower()
+        if answer != request.form['user_answer'].lower():
             flash("Wrong answer. Try again.")
         else:
             UsersRiddles.create(riddle=riddle_id, user=current_user.user_id)
@@ -139,7 +135,7 @@ def riddles():
     query = (Riddles
             .select(Riddles.riddle_id)
             .order_by(Riddles.riddle_id)
-            .limit(100))
+            .limit(RIDDLES_LIMIT))
     riddles = [riddle.riddle_id for riddle in query]
     query = UsersRiddles.select(UsersRiddles.riddle_id).where(UsersRiddles.user_id == current_user.user_id)
     solved = {riddle.riddle_id for riddle in query}
@@ -166,6 +162,17 @@ def login():
             else:
                 flash('The password entered is incorrect')
     return render_template('login.j2')
+
+
+@app.route('/ranking')
+def ranking():
+    top_players = (Users
+            .select()
+            .order_by(Users.points.desc())
+            .limit(TOP_PLAYERS))
+    top_players = [(i, user) for i, user in enumerate(top_players, 1)]
+    print(top_players)
+    return render_template('ranking.j2', top_players=top_players)
 
 
 @app.route('/logout')

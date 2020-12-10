@@ -9,24 +9,9 @@ from playhouse.db_url import connect
 
 
 load_dotenv()
-# if 'HEROKU' in os.environ:
 db_proxy = Proxy()
 database = connect(os.getenv('DATABASE_URL'))
 db_proxy.initialize(database)
-
-# else:
-#     DATABASE = os.getenv('DATABASE')
-#     USER = os.getenv('USER')
-#     PASSWORD = os.getenv('PASSWORD')
-#     HOST = os.getenv('HOST')
-#     PORT = os.getenv('PORT')
-#     database = PostgresqlDatabase(
-#         DATABASE,
-#         user=USER,
-#         password=PASSWORD,
-#         host=HOST,
-#         port=PORT,
-#     )
 
 
 class UnknownField(object):
@@ -83,15 +68,36 @@ TABLES = [
 ]
 
 
-def reset_db():
-    with database.connection_context():
-        database.create_tables(TABLES, safe=True)
-        database.commit()
+def reset_db(path):
+    """Reset the database - truncate all tables and recreate them with initialized data.
+    Args:
+        path (str): Path to riddles.csv data file.
+    Returns:
+        None.
+    """
+    if path is None:
+        print("Please specify riddles.csv path. Aborting...")
+    else:
+        with database.connection_context():
+            ans = input("Running this will truncate ALL tables on the database. Are you sure? (y/n): ")
+            try:
+                if ans == "y":
+                    database.drop_tables(TABLES)
+                    database.create_tables(TABLES, safe=True)
+                    # This function calls commiting database.
+                    update_difficulties()
+                    update_riddles(path)
+                else:
+                    print("Aborting...")
+            except (TypeError, FileNotFoundError) as e:
+                print(e)
+                print("An error occured. Check your riddles.csv file or input path.")
+            
+
 
 def update_difficulties():
+    """Updates difficulty table."""
     with database.connection_context():
-        # database.drop_tables(Difficulty)
-        # database.create_tables([Difficulty], safe=True)
         difficulties = [
             {'name': 'Easy'},
             {'name': 'Normal'},
@@ -100,12 +106,11 @@ def update_difficulties():
         Difficulty.insert_many(difficulties).execute()
         database.commit()
 
-
     
-def update_riddles():
+def update_riddles(path):
+    """Updates riddles table."""
     with database.connection_context():
-        # database.create_tables([Riddles], safe=True)
-        data = pandas.read_csv('riddles.csv')
+        data = pandas.read_csv(path)
         questions = data.QUESTIONS.tolist()
         answers = data.ANSWERS.tolist()
         qa_dict = dict(zip(questions, answers))
@@ -116,6 +121,8 @@ def update_riddles():
         database.commit()
 
 
-# reset_db()
-# update_difficulties()
-# update_riddles()
+# if __name__ == "__main__":
+#     path = 'riddles.csv'
+#     reset_db(path)
+#     update_difficulties()
+#     update_riddles(path)

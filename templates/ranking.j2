@@ -1,0 +1,41 @@
+{% extends "base.j2" %}
+{% block title %}Ranking{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+  <main class="riddle-main-container">
+    <div class="riddle-head-text">
+      <h1>Riddlism's Hall of Fame</h1>
+      <h2>Do you have the sharpest mind of them all?</h2>
+      <h2>Check out Riddlism's leaderboard to find out!</h2> 
+    </div>
+    <div class="page-main-image"><img src="{{ url_for('static', filename='images/fox_dub.svg') }}" width="300" height="300" class="d-inline-block align-top" alt="..."></div>
+    <table class="table table-hover" id="ranking-table">
+      <thead>
+        <tr>
+          <th scope="col">Rank</th>
+          <th scope="col">Name</th>
+          <th scope="col">Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i, user in top_players %}
+        <tr>
+          <th scope="row">{{i}}</th>
+          <td>{{user.name}}</td>
+          <td>
+            <div class="rank-points">
+              <img src="{{ url_for('static', filename='images/star_stats.svg') }}" width="20" height="20" class="d-inline-block" alt="">
+              <span>{{user.points}}</span>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>   
+  </main>
+{% endblock %}

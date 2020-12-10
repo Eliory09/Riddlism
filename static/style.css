@@ -21,24 +21,6 @@ body::after {
 }
 
 
-.main-body {
-    background: url(/static/images/main-1500.jpg) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-
-.error-body {
-    background: url(/static/images/error-1500.jpg) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-
 h1, h2, p {
     margin: 0;
     padding: 0;
@@ -210,6 +192,7 @@ footer {
 }
 
 .riddle-main-container {
+    margin: 40px 50px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -218,12 +201,26 @@ footer {
 }
 
 .riddle-head-text {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
+.riddle-head-text h2 {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.page-main-image {
+    margin: 40px 0px;
+}
+
+#ranking-table {
+    background-color: rgb(243, 243, 243);
+    max-width: 600px;
+}
+
 
 #question {
     display: flex;
@@ -308,24 +305,8 @@ footer {
     margin-top: 50px;
 }
 
+/* Adapatability for mobiles and narrow screens. */
 @media screen and (max-width: 600px) {
-    .main-body {
-        background: url(/static/images/main-600.jpg) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
-
-    .error-body {
-        background: url(/static/images/error-600.jpg) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-
-    }
-
     .cards-wrapper  {
         display: grid;
         grid-template-columns: repeat(2, 1fr);

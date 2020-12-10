@@ -28,7 +28,6 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-              {# {% if session['logged_in'] == True %} #}
               {% if current_user.is_authenticated %}
                 <li class="nav-item" id="user-name">
                   <span class="navbar-text js-scroll-trigger">{{ current_user.name }}</span>
@@ -39,13 +38,12 @@
                 </li>
               {% endif %}
               <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#about">About</a>
+                <a class="nav-link js-scroll-trigger" href="{{ url_for('ranking') }}">Ranking</a>
               </li>
               
               <li class="nav-item">
                 <a class="nav-link js-scroll-trigger" href="{{ url_for('register') }}">Register</a>
               </li>
-              {# {% if session['logged_in'] == True %} #}
               {% if current_user.is_authenticated %}
                 <li class="nav-item">
                   <a class="nav-link js-scroll-trigger" href="{{ url_for('logout') }}">Logout</a>

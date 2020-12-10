@@ -12,7 +12,7 @@
       <h1>Congratulations {{ username }}!</h1>
       <h2>You solved the puzzle</h2> 
     </div>
-    <div class="star-image"><img src="{{ url_for('static', filename='images/star.svg') }}" width="150" height="150" class="d-inline-block align-top" alt="..."></div>
+    <div class="page-main-image"><img src="{{ url_for('static', filename='images/star.svg') }}" width="150" height="150" class="d-inline-block align-top" alt="..."></div>
     <div class="continue-buttons">
       <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
         <a href="{{ url_for('index') }}"><button type="button" class="btn btn-outline-primary" name="submit" value="Homepage">Homepage</button></a>
