@@ -1,5 +1,9 @@
-# Riddlism
-Challenging riddles and brain teasers website.
+<h1 align="center">
+  <img src="https://i.imgur.com/34JLPMV.png" width="300"/>
+  <p></p>
+</h1>
+  
+<p align="center">Challenging riddles and brain teasers website.</p>
 
 ## Table Of Content
 - [Introduction](#introduction)
